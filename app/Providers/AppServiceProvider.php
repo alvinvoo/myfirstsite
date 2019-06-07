@@ -13,7 +13,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        // test binding
+        $this->app->bind(
+            \App\Repositories\UserRepository::class, // abstract class
+            \App\Repositories\DbUserRepository::class // concrete class (impl class)
+        );
     }
 
     /**

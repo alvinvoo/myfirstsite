@@ -11,6 +11,8 @@
 |
 */
 
+use App\Repositories\UserRepository;
+
 Route::get('/', 'PageController@home');
 
 Route::get('/contact', 'PageController@contact');
@@ -39,3 +41,12 @@ Route::resource('projects','ProjectController');
 Route::patch('/tasks/{task}','ProjectTaskController@update');
 
 Route::post('/projects/{project}/task','ProjectTaskController@create');
+
+Route::get('/twitter', function(){
+  // when Twitter class is resolved here (to an instance), the service provider would already initialized it with an 'api-key'
+  dd(app('App\Services\Twitter'));
+});
+
+Route::get('/userrepo', function(UserRepository $users){
+  dd($users);
+});
