@@ -17,7 +17,7 @@ class SocialServiceProvider extends ServiceProvider
         //
         // this will always be registered first when framework starts
         $this->app->singleton(Twitter::class, function(){
-            return new Twitter('my-key-here');
+            return new Twitter(config('services.twitter.key'));
         });
 
     }
