@@ -8,10 +8,24 @@ use App\Project;
 class ProjectController extends Controller
 {
     //
+    public function __construct(){
+        // middleware here applies to all REST endpoints below
+        // so now can only access after authorized
+        // but doesnt limit this user from accessing another user's project
+        // $this->middleware('auth')->only(['create','update']);
+        // $this->middleware('auth)->except(['show']);
+        $this->middleware('auth');
+    }
 
     public function index(){
 
-        $projects = Project::all();
+        // auth helper functions
+        // auth()->id()
+        // auth()->user()
+        // auth()->check()
+        // auth()->guest()
+
+        $projects = Project::where('owner_id', auth()->id())->get();
     
         return view('projects/index', compact('projects'));
     }
@@ -37,11 +51,15 @@ class ProjectController extends Controller
         // ]);
 
         // Project::create(request(['title', 'description']));
-
-        Project::create(request()->validate([
+        
+        $attributes = request()->validate([
             'title' => 'required | min:3',
             'description' => ['required','min:3','max:100']
-        ]));
+        ]);
+
+        $attributes +=  [ 'owner_id' => auth()->id() ];
+
+        Project::create($attributes);
 
         return redirect('/projects');
     }

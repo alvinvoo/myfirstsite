@@ -13,8 +13,8 @@
         type="text"
         name="title"
         placeholder="Project Title"
-        value={{ old('title') }}
-        required>
+        required
+        value="{{ old('title') }}">
         </div>
       </div>
 
