@@ -3,7 +3,12 @@
 @section('title', $project->title)
 
 @section('content')
-    <h1>{{$project->title}}</h1>
+    <h1 class="title">{{$project->title}}</h1>
+
+    @can('update', $project)
+      <h1>{{auth()->user()->name}} can update!</h1>
+    @endcan
+
     <div>
       <textarea name="content" id="" cols="30" rows="10" disabled>
         {{$project->description}}

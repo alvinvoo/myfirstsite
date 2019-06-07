@@ -31,6 +31,13 @@ class ProjectController extends Controller
     }
     
     public function show(Project $project){
+
+        // abort_if($project->owner_id !== auth()->id(), 403);
+        // abort_unless(auth()->user()->owns($project), 403); need to define owns for user model here
+        // make use of policy
+        $this->authorize('update', $project);
+        // abort_unless(\Gate::allows('update', $project), 403);
+        // abort_unless(auth()->user()->can('update', $project), 403);
         return view('projects/show', compact('project'));
     }
 

@@ -25,6 +25,7 @@ Route::get('/about', 'PageController@about');
 
 // Route::post('/projects', 'ProjectController@store');
 
+// Route::resource('projects','ProjectController')->middleware('can:update,project');
 Route::resource('projects','ProjectController');
 
 //* resource for routes
