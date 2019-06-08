@@ -40,4 +40,8 @@ class User extends Authenticatable
     public function isAdmin(){
         return $this->id == 2; // only 2 is alvin@test.com ATM
     }
+
+    public function projects(){
+        return $this->hasMany(Project::class,'owner_id'); // select * from projects where owner_id = .. <this class's id>
+    }
 }

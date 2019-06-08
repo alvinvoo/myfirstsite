@@ -32,4 +32,6 @@
       </div>
     </form>
 
+    @include('../error');
+
 @endsection

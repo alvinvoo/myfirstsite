@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Project;
+use App\Mail\ProjectCreated;
 
 class ProjectController extends Controller
 {
@@ -24,8 +25,14 @@ class ProjectController extends Controller
         // auth()->user()
         // auth()->check()
         // auth()->guest()
+        // not readable enough?
+        // $projects = Project::where('owner_id', auth()->id())->get();
+        $projects = auth()->user()->projects;
 
-        $projects = Project::where('owner_id', auth()->id())->get();
+        // dump($projects); // for telescope dump
+        // cache()->rememberForever('alvin-key', function () {
+        //     return ['my-number' => 133 ];
+        // });
     
         return view('projects/index', compact('projects'));
     }
@@ -59,14 +66,16 @@ class ProjectController extends Controller
 
         // Project::create(request(['title', 'description']));
         
-        $attributes = request()->validate([
-            'title' => 'required | min:3',
-            'description' => ['required','min:3','max:100']
-        ]);
+        $attributes = $this->validateProject();
 
         $attributes +=  [ 'owner_id' => auth()->id() ];
 
-        Project::create($attributes);
+        $project = Project::create($attributes);
+
+        // send to Mail - use $project properties
+        \Mail::to('alvin@voo.com')->send(
+            new ProjectCreated($project)
+        );
 
         return redirect('/projects');
     }
@@ -82,7 +91,7 @@ class ProjectController extends Controller
         // $project->description = request('description');
         // $project->save();
 
-        $project->update(request(['title', 'description']));
+        $project->update($this->validateProject());
 
         return redirect('projects');
     }
@@ -93,5 +102,12 @@ class ProjectController extends Controller
         $project->delete();
 
         return redirect('projects');
+    }
+
+    public function validateProject(){
+        return request()->validate([
+            'title' => 'required | min:3',
+            'description' => ['required','min:3','max:100']
+        ]);
     }
 }
