@@ -13,7 +13,7 @@
 Written by
 
 <p>
-  {{ $project->owner_id }}
+  {{ $project->owner->name }}
 </p>
 
 

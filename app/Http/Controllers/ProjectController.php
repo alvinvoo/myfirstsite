@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Project;
-use App\Mail\ProjectCreated;
+use App\Events\ProjectCreated;
 
 class ProjectController extends Controller
 {
@@ -68,14 +68,16 @@ class ProjectController extends Controller
         
         $attributes = $this->validateProject();
 
-        $attributes +=  [ 'owner_id' => auth()->id() ];
-
-        $project = Project::create($attributes);
+        $project = auth()->user()->projects()->create($attributes);
 
         // send to Mail - use $project properties
-        \Mail::to('alvin@voo.com')->send(
-            new ProjectCreated($project)
-        );
+        // now fired as a created hook
+        // \Mail::to($project->owner->email)->queue( // why can this access as $project-owner?
+        //     new ProjectCreated($project)
+        // );
+
+        // fire a custom ProjectCreated event
+        event(new ProjectCreated($project));
 
         return redirect('/projects');
     }

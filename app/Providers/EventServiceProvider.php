@@ -6,6 +6,10 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use App\Events\ProjectCreated;
+use App\Events\ProjectUpdated;
+use App\Listeners\SendEmailWhenProjectCreatedNotification;
+use App\Listeners\ProjectUpdatedListener;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -18,6 +22,14 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+
+        ProjectCreated::class => [
+            SendEmailWhenProjectCreatedNotification::class
+        ],
+
+        ProjectUpdated::class => [
+            ProjectUpdatedListener::class
+        ]
     ];
 
     /**
