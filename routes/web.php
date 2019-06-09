@@ -12,6 +12,7 @@
 */
 
 use App\Repositories\UserRepository;
+use App\Notifications\SubscriptionRenewalFailed;
 
 Route::get('/', 'PageController@home');
 
@@ -56,3 +57,10 @@ Route::get('/userrepo', function(UserRepository $users){
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
+
+// quick demo of notification end point
+Route::get('/notify-user', function(){
+  auth()->user()->notify(new SubscriptionRenewalFailed);
+
+  return 'done';
+});

@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable; // a trait. User can do, $user-notify(<notification class>)
 
     /**
      * The attributes that are mass assignable.
