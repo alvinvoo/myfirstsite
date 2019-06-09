@@ -35,6 +35,16 @@ class ProjectTaskController extends Controller {
     // ]);
 
     request()->has('completed') ? $task->complete() : $task->incomplete();
+    
+    // for entire user session
+    // session(['name','somebody']); // set
+    // session('name', 'a default name'); // get
+    // $request->session()->get('name'); // get from request->session, incase this only exist for this request
+
+    // for the NEXT ONE request only
+    // this is suitable for flash message, which we want to discard after use in next session
+    // session()->flash('message', 'Your task has been updated.');
+    flash('Your task has been updated.');
 
     return back();
   }

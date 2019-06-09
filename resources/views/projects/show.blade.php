@@ -43,4 +43,8 @@
       </div>
       @include('error');
     </form>
+    
+    @if(session('message'))
+      <p>{{ session('message') }}</p>
+    @endif
 @endsection
